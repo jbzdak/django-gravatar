@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 from  urllib.request import urlopen
 
 from django import template
@@ -41,7 +42,7 @@ def _get_user(user):
 
 
 def _get_gravatar_id(email):
-    return hashlib.md5(email.strip().lower()).hexdigest()
+    return hashlib.md5(email.strip().lower().encode('utf-8')).hexdigest()
 
 
 @register.simple_tag
@@ -67,7 +68,7 @@ def gravatar_for_email(email, size=None, rating=None):
     ) if p[1]]
 
     if parameters:
-        gravatar_url += '?' + urllib.urlencode(parameters, doseq=True)
+        gravatar_url += '?' + urlencode(parameters, doseq=True)
 
     return escape(gravatar_url)
 
